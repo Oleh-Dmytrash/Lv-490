@@ -1,0 +1,116 @@
+#include "list.h"
+
+void CreateList(char*** head, char* str)//create list and insert head
+{
+	char** list_head = (char**)malloc(2 * sizeof(char*));
+
+	*head = list_head;//set pointer to head
+
+	char* current_str = NULL;
+	current_str = (char*)malloc(strlen(str) * sizeof(char));
+	strcpy(current_str, str);
+	
+	list_head[0] = current_str;
+	list_head[1] = NULL;
+}
+
+void AddElem(char*** list_head, char* str)
+{
+	char** current_elem = *list_head;
+	char** new_elem = (char**)malloc(2 * sizeof(char*));//create new elem
+	while (1)//search last elem
+	{		
+		if (current_elem[1] == NULL)
+		{		
+			current_elem[1] = (char*)new_elem;//add new elem to list
+			break;
+		}
+		else
+		{
+			char** next_ptr = (char**)current_elem[1];
+			current_elem = next_ptr;
+		}
+	}
+	
+	char* current_str = NULL;
+	current_str = (char*)malloc(strlen(str) * sizeof(char));
+	strcpy(current_str, str);
+	new_elem[0] = current_str;//add string to list
+	new_elem[1] = NULL;//set next elen as NULL
+}
+
+char* ReadElem(char*** list_head, int pos)
+{
+	char** current_elem = *list_head;
+	int elem_count = 0;
+	while (1)
+	{
+		if (elem_count == pos)
+		{
+			return *current_elem;
+		}		
+
+		current_elem = (char**)current_elem[1];
+
+		if (current_elem == NULL)
+		{
+			return NULL;
+		}
+
+		++elem_count;
+	}
+	return NULL;
+}
+
+
+void RemoveAllElem(char*** list_head)
+{
+	char** current_elem = *list_head;
+	while (1)
+	{
+		char** next_elem = (char**)current_elem[1];
+		//char* str = current_elem[0];
+		free(current_elem);
+
+		current_elem = next_elem;
+
+		if (next_elem == NULL)
+		{
+			free(next_elem);
+			return;
+		}
+	}
+}
+
+void RemoveElem(char*** list_head, int pos)
+{
+	char** current_elem = *list_head;
+	int current_pos = 1;
+	while (1)
+	{
+		if (pos == 0)
+		{
+			*list_head = (char**)current_elem[1];
+			free(current_elem);
+		}
+
+		char** next_elem = (char**)current_elem[1];
+		char** previous_elem = current_elem;
+		current_elem = (char**)next_elem;
+		next_elem = (char**)current_elem[1];
+		
+		++current_pos;
+
+		if (current_pos == pos)
+		{				
+			free(current_elem);
+			previous_elem[1] = (char*)next_elem;
+			return;
+		}
+		
+		if (next_elem == NULL)
+		{
+			return;
+		}		
+	}
+}
