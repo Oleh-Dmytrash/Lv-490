@@ -15,8 +15,11 @@ char** ReadElem(char*** list_head, int pos);
 //remove all element from list anf free memory
 void RemoveAllElem(char*** list_head);
 
-//remove element in spme position 'pos'
+//remove element in some position 'pos'
 void RemoveElem(char*** list_head, int pos);
+
+//remove element for some string 'str'
+void RemoveElemDuplicates(char*** list_head, char* str);
 
 //get size of list
 int ListSize(char*** list_head);

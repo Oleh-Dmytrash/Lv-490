@@ -118,6 +118,43 @@ void RemoveElem(char*** list_head, int pos)
 	}
 }
 
+void RemoveElemDuplicates(char*** list_head, char* str)
+{
+	char** current_elem = *list_head;
+	int size = ListSize(list_head);
+
+	int count_of_elem_with_str = 0;
+
+	if (strcmp(current_elem[0], str) == 0)
+	{
+		++count_of_elem_with_str;
+	}
+
+	char** previous_elem = current_elem;
+	current_elem = (char**)current_elem[1];
+
+	while (current_elem != NULL)//locking for and remove the elements with the same strings 'str'
+	{		
+		if (strcmp(current_elem[0], str) == 0)//count elements with same strings 'str'
+		{
+			if (count_of_elem_with_str)
+			{				
+				previous_elem[1] = current_elem[1];
+				free(current_elem);
+				current_elem = (char**)previous_elem[1];
+			}
+			++count_of_elem_with_str;
+		}
+		else
+		{
+			previous_elem = current_elem;
+			current_elem = (char**)current_elem[1];//go to next element
+		}
+		
+
+	}
+}
+
 int ListSize(char*** list_head)
 {
 	char** current_elem = *list_head;
@@ -146,7 +183,7 @@ int SearchFirst(char*** list_head, char* str)
 	{
 		return -1;
 	}
-	while (1)
+	while (current_elem != NULL)
 	{
 		if (strlen(*current_elem) == strlen(str))
 		{

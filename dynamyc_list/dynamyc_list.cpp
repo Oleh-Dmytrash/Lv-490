@@ -25,6 +25,7 @@ int main()
         elem = ReadElem(&list, pos);
         if (elem != NULL)
         {
+            printf("Element %i\n", pos);
             printf("Address: %p\n", elem[0]);
             printf("Element: %s\n", elem[0]);
         }
@@ -32,11 +33,11 @@ int main()
     } while (elem); 
 
     std::cout << std::endl;
-
-    SortList(&list);
-
+    
     RemoveElem(&list, 3);
     std::cout << "Element in position '3' deleted" << std::endl << std::endl;
+
+    SortList(&list);
 
     pos = 0;
     elem = NULL;
@@ -45,6 +46,53 @@ int main()
         elem = ReadElem(&list, pos);
         if (elem != NULL)
         {
+            printf("Element %i\n", pos);
+            printf("Address: %p\n", elem[0]);
+            printf("Element: %s\n", elem[0]);
+        }
+        ++pos;
+    } while (elem);
+
+    RemoveAllElem(&list);
+
+    std::cout << "\n-------------------------------Remove dublicats example---------------------------\n" << std::endl;
+        
+    list = NULL;
+    CreateList(&list, str);
+    AddElem(&list, str);
+    AddElem(&list, str+4);
+    AddElem(&list, str);
+    AddElem(&list, str+2);
+    AddElem(&list, str);
+
+    std::cout << "List before diblicat's removed:\n\n";
+    pos = 0;
+    elem = NULL;
+    do
+    {
+        elem = ReadElem(&list, pos);
+        if (elem != NULL)
+        {
+            printf("Element %i\n", pos);
+            printf("Address: %p\n", elem[0]);
+            printf("Element: %s\n", elem[0]);
+        }
+        ++pos;
+    } while (elem);
+    
+    RemoveElemDuplicates(&list, str);
+
+    std::cout << std::endl;
+
+    std::cout << "List after diblicat's removed:\n\n";
+    pos = 0;
+    elem = NULL;
+    do
+    {
+        elem = ReadElem(&list, pos);
+        if (elem != NULL)
+        {
+            printf("Element %i\n", pos);
             printf("Address: %p\n", elem[0]);
             printf("Element: %s\n", elem[0]);
         }
