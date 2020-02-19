@@ -16,35 +16,44 @@ int main()
     
     std::cout << "Size of list: " << ListSize(&list) << std::endl << std::endl;
 
-    std::cout << "first position for " << str + 3 << ": " << SearchFirst(&list, str + 3) << std::endl << std::endl;
+    std::cout << "First position for " << str + 3 << ": " << SearchFirst(&list, str + 3) << std::endl << std::endl;
 
     int pos = 0;
-    char* elem = NULL;
+    char** elem = NULL;
     do
     {
         elem = ReadElem(&list, pos);
-        printf("Address: %p\n", elem);
-        printf("Element: %s\n", elem);
+        if (elem != NULL)
+        {
+            printf("Address: %p\n", elem[0]);
+            printf("Element: %s\n", elem[0]);
+        }
         ++pos;
     } while (elem); 
 
-    std::cout << std::endl << std::endl;
+    std::cout << std::endl;
 
     SortList(&list);
 
     RemoveElem(&list, 3);
+    std::cout << "Element in position '3' deleted" << std::endl << std::endl;
 
     pos = 0;
     elem = NULL;
     do
     {
         elem = ReadElem(&list, pos);
-        printf("Address: %p\n", elem);
-        printf("Element: %s\n", elem);
+        if (elem != NULL)
+        {
+            printf("Address: %p\n", elem[0]);
+            printf("Element: %s\n", elem[0]);
+        }
         ++pos;
     } while (elem);
 
     RemoveAllElem(&list);
+
+    return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
