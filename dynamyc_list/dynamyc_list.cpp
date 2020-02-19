@@ -14,6 +14,10 @@ int main()
     AddElem(&list, str + 3);
     AddElem(&list, str + 4);
     
+    std::cout << ListSize(&list) << std::endl << std::endl;
+
+    std::cout << SearchFirst(&list, str + 3) << std::endl << std::endl;
+
     int pos = 0;
     char* elem = NULL;
     do

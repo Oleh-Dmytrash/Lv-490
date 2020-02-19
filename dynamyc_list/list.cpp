@@ -43,14 +43,14 @@ char* ReadElem(char*** list_head, int pos)
 {
 	char** current_elem = *list_head;
 	int elem_count = 0;
-	while (1)
+	while (1)//search element in pos
 	{
 		if (elem_count == pos)
 		{
 			return *current_elem;
 		}		
 
-		current_elem = (char**)current_elem[1];
+		current_elem = (char**)current_elem[1];//go to next element
 
 		if (current_elem == NULL)
 		{
@@ -68,15 +68,17 @@ void RemoveAllElem(char*** list_head)
 	char** current_elem = *list_head;
 	while (1)
 	{
-		char** next_elem = (char**)current_elem[1];
-		//char* str = current_elem[0];
-		free(current_elem);
+		char** next_elem = (char**)current_elem[1];//get next element
+				
+		free(current_elem);//delete current element
+		current_elem = NULL;
 
-		current_elem = next_elem;
+		current_elem = next_elem;//go to next element
 
 		if (next_elem == NULL)
 		{
-			free(next_elem);
+			free(next_elem);//delete last element
+			current_elem = NULL;
 			return;
 		}
 	}
@@ -85,25 +87,27 @@ void RemoveAllElem(char*** list_head)
 void RemoveElem(char*** list_head, int pos)
 {
 	char** current_elem = *list_head;
-	int current_pos = 1;
+	int current_pos = 0;
 	while (1)
 	{
 		if (pos == 0)
 		{
 			*list_head = (char**)current_elem[1];
 			free(current_elem);
+			current_elem = NULL;
 		}
 
-		char** next_elem = (char**)current_elem[1];
-		char** previous_elem = current_elem;
-		current_elem = (char**)next_elem;
-		next_elem = (char**)current_elem[1];
+		char** next_elem = (char**)current_elem[1];//get next element
+		char** previous_elem = current_elem;//remember previous element
+		current_elem = (char**)next_elem;//go to next element
+		next_elem = (char**)current_elem[1];//remember next element
 		
 		++current_pos;
 
-		if (current_pos == pos)
+		if (current_pos == pos)//delete element in position 'pos'
 		{				
 			free(current_elem);
+			current_elem = NULL;
 			previous_elem[1] = (char*)next_elem;
 			return;
 		}
@@ -112,5 +116,70 @@ void RemoveElem(char*** list_head, int pos)
 		{
 			return;
 		}		
+	}
+}
+
+int ListSize(char*** list_head)
+{
+	char** current_elem = *list_head;
+	int count = 0;//number of elements
+	while (1)
+	{
+		if (current_elem == NULL)//return elemnt's number when
+		{			
+			return count;
+		}
+		else
+		{
+			++count;
+		}
+
+		char** next_elem = (char**)current_elem[1];//get next element
+		current_elem = next_elem;//go to next element
+	}
+	return count;
+}
+
+int SearchFirst(char*** list_head, char* str)
+{
+	char** current_elem = *list_head;
+	int pos = 0;
+	if (str == NULL || current_elem == NULL)
+	{
+		return -1;
+	}
+	while (1)
+	{
+		if (strlen(*current_elem) == strlen(str))
+		{
+			for (int i = 0; i < strlen(*current_elem); i++)
+			{
+				if ((*current_elem)[i] != str[i])
+				{
+					break;
+				}
+				if (i == strlen(str) - 1)
+				{
+					return pos;
+				}
+			}
+		}
+		else
+		{
+			++pos;
+		}
+
+		char** next_elem = (char**)current_elem[1];//get next element
+		current_elem = next_elem;//go to next elemnt
+	}
+	return pos;
+}
+
+void SortList(char*** list_head)
+{
+	char** current_elem = *list_head;
+	for (int i = 0; i < strlen(current_elem[0]); ++i)
+	{
+
 	}
 }
