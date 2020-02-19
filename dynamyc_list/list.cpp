@@ -27,8 +27,8 @@ void AddElem(char*** list_head, char* str)
 		}
 		else
 		{
-			char** next_ptr = (char**)current_elem[1];
-			current_elem = next_ptr;
+			//char** next_ptr = (char**)current_elem[1];
+			current_elem = (char**)current_elem[1];//go to next elem
 		}
 	}
 	
@@ -97,10 +97,10 @@ void RemoveElem(char*** list_head, int pos)
 			current_elem = NULL;
 		}
 
-		char** next_elem = (char**)current_elem[1];//get next element
+		//char** next_elem = (char**)current_elem[1];//get next element
 		char** previous_elem = current_elem;//remember previous element
-		current_elem = (char**)next_elem;//go to next element
-		next_elem = (char**)current_elem[1];//remember next element
+		current_elem = (char**)current_elem[1];//go to next element
+		char** next_elem = (char**)current_elem[1];//remember next element
 		
 		++current_pos;
 
@@ -134,8 +134,8 @@ int ListSize(char*** list_head)
 			++count;
 		}
 
-		char** next_elem = (char**)current_elem[1];//get next element
-		current_elem = next_elem;//go to next element
+		//char** next_elem = (char**)current_elem[1];//get next element
+		current_elem = (char**)current_elem[1];//go to next element
 	}
 	return count;
 }
@@ -169,17 +169,45 @@ int SearchFirst(char*** list_head, char* str)
 			++pos;
 		}
 
-		char** next_elem = (char**)current_elem[1];//get next element
-		current_elem = next_elem;//go to next elemnt
+		//char** next_elem = (char**)current_elem[1];//get next element
+		current_elem = (char**)current_elem[1];//go to next elemnt
 	}
 	return pos;
+}
+
+void swap(char** elem_1, char** elem_2)
+{
+	char* temp_elem = elem_1[0];
+	elem_1[0] = elem_2[0];
+	elem_2[0] = temp_elem;
 }
 
 void SortList(char*** list_head)
 {
 	char** current_elem = *list_head;
-	for (int i = 0; i < strlen(current_elem[0]); ++i)
-	{
+	int size = ListSize(list_head);
 
+	char** min_str = NULL;
+	char** current_elem_for_compare = NULL;
+
+	for (int i = 0; i < size; ++i)
+	{
+		min_str = current_elem;
+		current_elem_for_compare = current_elem;
+
+		while (current_elem_for_compare != NULL)
+		{
+			if (strcmp(min_str[0], current_elem_for_compare[0]) > 0)
+			{
+				min_str = current_elem_for_compare;
+			}
+
+			//char** next_elem_for_compare = (char**)current_elem_for_compare[1];
+			current_elem_for_compare = (char**)current_elem_for_compare[1];
+		}
+
+		//char** next_elem = (char**)current_elem[1];//get next element
+		swap(current_elem, min_str);
+		current_elem = (char**)current_elem[1];//go to next elemnt
 	}
 }

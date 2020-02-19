@@ -24,4 +24,5 @@ int ListSize(char*** list_head);
 //get the index position of the first exact match of specified string
 int SearchFirst(char*** list_head, char* str);
 
+//sorting list by selection sort
 void SortList(char*** list_head);

@@ -6,17 +6,17 @@
 
 int main()
 {
-    char str[] = { "test dynamic list" };
+    char str[] = { "abcdefg" };
     char** list = NULL;
     CreateList(&list, str);
-    AddElem(&list, str + 1);
-    AddElem(&list, str + 2);
     AddElem(&list, str + 3);
+    AddElem(&list, str + 1);
     AddElem(&list, str + 4);
+    AddElem(&list, str + 2);
     
-    std::cout << ListSize(&list) << std::endl << std::endl;
+    std::cout << "Size of list: " << ListSize(&list) << std::endl << std::endl;
 
-    std::cout << SearchFirst(&list, str + 3) << std::endl << std::endl;
+    std::cout << "first position for " << str + 3 << ": " << SearchFirst(&list, str + 3) << std::endl << std::endl;
 
     int pos = 0;
     char* elem = NULL;
@@ -29,7 +29,9 @@ int main()
     } while (elem); 
 
     std::cout << std::endl << std::endl;
-    
+
+    SortList(&list);
+
     RemoveElem(&list, 3);
 
     pos = 0;
