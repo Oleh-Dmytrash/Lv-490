@@ -142,7 +142,7 @@ int main()
         ++pos;
     } while (elem);
 
-    //StringListDestroy(&list);
+    StringListDestroy(&list);
 
     return 0;
 }

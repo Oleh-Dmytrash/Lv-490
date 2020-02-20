@@ -159,7 +159,9 @@ void StringListReplaceInStrings(char** list, char* before, char* after)
 	{
 		if (strcmp(current_elem[0], before) == 0)
 		{			
-			current_elem[0] = after;
+			char* str = (char*)malloc((strlen(after) + 1) * sizeof(char));
+			strcpy(str, after);
+			current_elem[0] = str;
 		}
 
 		current_elem = (char**)current_elem[1];//go to next elemnt
