@@ -50,6 +50,12 @@ void StringListAdd(char** list, String str)
 	char** new_elem = (char**)malloc(2 * sizeof(char*));//create new elem
 	char* current_str = NULL;
 	current_str = (char*)malloc((strlen(str) + 1) * sizeof(char));
+	
+	if (!current_elem || !new_elem)
+	{
+		return;
+	}
+
 	if (strlen(current_str) > strlen(str) && current_str)
 	{
 		strcpy(current_str, str);
@@ -94,7 +100,9 @@ void StringListRemove(char** list, String str)
 			if (count_of_elem_with_str)
 			{
 				previous_elem[1] = current_elem[1];
-				free(current_elem);
+				free(current_elem[0]);//delete string
+				current_elem[0] = NULL;
+				free(current_elem);//delete element
 				current_elem = (char**)previous_elem[1];
 			}
 			++count_of_elem_with_str;
