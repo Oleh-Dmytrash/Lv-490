@@ -9,6 +9,11 @@ void StringListInit(char*** list)
 	}
 	char** list_head = (char**)malloc(2 * sizeof(char*));
 
+	if (list_head == NULL)
+	{
+		return;
+	}
+
 	*list = list_head;//set pointer to head
 
 	list_head[0] = NULL;
@@ -18,6 +23,10 @@ void StringListInit(char*** list)
 /* Destroy list and set pointer to NULL. */
 void StringListDestroy(char*** list)
 {
+	if (*list == NULL)
+	{
+		return;
+	}
 	char** current_elem = *list;
 	while (current_elem != NULL)
 	{
@@ -29,7 +38,7 @@ void StringListDestroy(char*** list)
 		current_elem = NULL;
 
 		current_elem = next_elem;//go to next element
-	}
+	}	
 	*list = NULL;
 }
 
@@ -41,7 +50,10 @@ void StringListAdd(char** list, String str)
 	char** new_elem = (char**)malloc(2 * sizeof(char*));//create new elem
 	char* current_str = NULL;
 	current_str = (char*)malloc((strlen(str) + 1) * sizeof(char));
-	strcpy(current_str, str);
+	if (strlen(current_str) > strlen(str) && current_str)
+	{
+		strcpy(current_str, str);
+	}
 	new_elem[0] = current_str;//add string to list
 	new_elem[1] = NULL;//set next elen as NULL
 
@@ -64,7 +76,6 @@ void StringListAdd(char** list, String str)
 void StringListRemove(char** list, String str)
 {
 	char** current_elem = list;
-	int size = StringListSize(list);
 
 	int count_of_elem_with_str = 0;
 
