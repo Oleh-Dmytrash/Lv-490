@@ -113,11 +113,23 @@ namespace slst
 
     void slst::StringListReplaceInStrings(char** node, char* before, char* after)
     {
-        while (node  /* != LIST_END */)
+        if (!node || (before == after) || !before || !after || (strcmp(before, after) == 0))
+            return;
+
+        do
         {
-            node[0] = util::StringReplace(node[0], before, after);
+            if (!node[0])
+                continue;
+
+            char* needsReplace = strstr(node[0], before);
+            if (needsReplace)
+            {
+                char* res = util::StringReplace(node[0], before, after);
+                if (node[0]) free(node[0]);
+                node[0] = res;
+            }
             StringListForward(&node);
-        }
+        } while (node  /* != LIST_END */);
     }
 
     void slst::StringListSort(char** list)
@@ -166,7 +178,7 @@ namespace slst
                 util::allocate_memory<char>(valueLength);              // node[0] was nullptr
             strcpy_s(node[0], valueLength, value);
         }
-        else if (node[0]) // assigning nullptr value is valid
+        else if (node[0]) // Assigning nullptr value is valid
         {
             free(node[0]);
             node[0] = nullptr;
