@@ -41,7 +41,6 @@ void StringListAdd(StringList list, const char* str)
 
 
 	auto temp = last_element;
-	//last_element = (ListNode)last_element[1];
 	last_element = (ListNode)malloc(2 * sizeof(char**));
 
 	temp[1] = (char*)last_element;
@@ -51,11 +50,12 @@ void StringListAdd(StringList list, const char* str)
 	last_element[1] = nullptr;
 
 }
-//TODO::
+
 void StringListRemove(StringList list, const char* str)
 {
 	if (list == nullptr) return;
 	ListNode current_element = list, next_element;
+
 	// if the value in the head is to be removed
 	while (strcmp((char*)current_element[0], str) == 0)
 	{
@@ -101,6 +101,7 @@ void StringListRemove(StringList list, const char* str)
 
 size_t StringListSize(const StringList list)
 {
+	if (list && list[0] == nullptr) return 0;
 	ListNode current_element = list;
 	size_t result{ 0 };
 	while (current_element != nullptr)
@@ -121,26 +122,12 @@ int StringListIndexOf(const StringList list, const char* str)
 		++item_index;
 		current_element = (ListNode)current_element[1];
 	}
+	return -1;
 }
-//TODO
+
 void StringListRemoveDuplicates(StringList list)
 {
-	/*ListNode current_node = *list;
-	int index = 0;
-	while (current_node != nullptr)
-	{
-		if (StringListHasSameElementBefore(*list, current_node))
-		{
-			ListNode next = (ListNode)current_node[1];
-			StringListRemoveByIndex(list, index);
-			current_node = next;
-		}
-		else
-		{
-			index++;
-			current_node = (ListNode)current_node[1];
-		}
-	}*/
+	if (list = nullptr) return;
 	ListNode current_node = list;
 	while (current_node[1] != nullptr)
 	{
