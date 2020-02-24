@@ -54,6 +54,14 @@ int main(int argc, char** argv)
 	PrintList(list);
 	PrintListSize(list);
 
+	slst::StringListRemove(list, (char*)"3");
+	slst::StringListRemove(list, (char*)"2");
+	slst::StringListRemove(list, (char*)"1");
+	slst::StringListRemove(list, (char*)"0");
+	std::cout << "\nList with removed everything: \n";
+	PrintList(list);
+	PrintListSize(list);
+
 	for (size_t k = 0; k < 5; k++)
 	{
 		char* str = util::allocate_memory<char>(3);

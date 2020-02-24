@@ -41,22 +41,32 @@ namespace slst
 
     void slst::StringListRemove(char** head, const String str)
     {
-      	char** currentNode = head;
+        char** currentNode = head;
         while (currentNode != nullptr && currentNode == head)
         {
             char** next = StringListGetNext(currentNode);
             if (util::StringsEqual(currentNode[0], str))
             {
-                head[0] = next[0];
-                StringListSetNext(head, StringListGetNext(next));
-                free(next);
+                if (next == nullptr)    // Head was the last element
+                {
+                    if (head[0]) free(head[0]);
+                    head[0] = nullptr;
+                    head[1] = nullptr;
+                    return;
+                }
+                else                    // There are still some elements left
+                {
+                    head[0] = next[0];
+                    StringListSetNext(head, StringListGetNext(next));
+                    free(next);
+                }    
             }       
             else
                 currentNode = next;
         }
 
         char** prev = head;
-        while (currentNode != nullptr)
+        while (currentNode != nullptr)  // List is not empty, check after the head
         {
             char** next = StringListGetNext(currentNode);
             if (util::StringsEqual(currentNode[0], str))
@@ -115,16 +125,17 @@ namespace slst
 
         do
         {
-            if (!node[0])
-                continue;
-
-            char* needsReplace = strstr(node[0], before);
-            if (needsReplace)
+            if (node[0])
             {
-                char* res = util::StringReplace(node[0], before, after);
-                free(node[0]);
-                node[0] = res;
+                char* needsReplace = strstr(node[0], before);
+                if (needsReplace)
+                {
+                    char* res = util::StringReplace(node[0], before, after);
+                    free(node[0]);
+                    node[0] = res;
+                }
             }
+        
             StringListForward(&node);
         } while (node  /* != LIST_END */);
     }
