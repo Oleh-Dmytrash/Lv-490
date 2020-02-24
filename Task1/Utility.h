@@ -26,7 +26,7 @@ namespace util
     }
    
     /* Replaces every occurence of the 'before' with 'after' */
-    char* StringReplace(char* original, char* before, char* after);
+    char* StringReplace(char* original, char* before, char* after/*, size_t offset = 0*/);
     /* Checks strings for equality of memory address or value. NULL is a valid argument */
     bool StringsEqual(const char* left, const char* right); 
 

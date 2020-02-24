@@ -24,7 +24,7 @@ namespace util
         lenAfter = strlen(after);
 
         // Searching for each starting location of the 'before' segment and counting them
-        ins = original;
+        ins = original /*+ offset*/;
         for (count = 0; tmp = strstr(ins, before); ++count)  
             ins = tmp + lenBefore;  
 

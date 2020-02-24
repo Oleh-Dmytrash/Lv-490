@@ -10,12 +10,14 @@ namespace slst
 
     void slst::StringListDestroy(char*** list)
     {
+        if (list == nullptr || list[0] == nullptr)
+            return;
         char** currentNode = list[0];
         while (currentNode /* != LIST_END */)
         {
             char** next = StringListGetNext(currentNode);
-            if (currentNode[0]) free(currentNode[0]);
-            free(currentNode);                                  // Destroy current node
+            free(currentNode[0]);
+            free(currentNode);
             currentNode = next;
         }
         list[0] = nullptr;                                      // Terminate end of the list
@@ -24,7 +26,7 @@ namespace slst
     void slst::StringListAdd(char** list, String str)
     {  
         char** newNode = nullptr;
-        if (list) // If list is not empty then append
+        if (list && str) // If list is not empty then append
         {
             newNode = StringListAllocateNode();
             StringListAssignVal(newNode, str);
@@ -34,39 +36,34 @@ namespace slst
                 currentNode = next;
             StringListSetNext(currentNode, newNode);            // Append new node
         }
-        //else throw...
-        //return newNode;                                       // Return tail of the list                                        
+        //else throw...                                       
     }
 
     void slst::StringListRemove(char** head, const String str)
     {
-        char** currentNode = head;
-        char** prev = nullptr;
+      	char** currentNode = head;
+        while (currentNode != nullptr && currentNode == head)
+        {
+            char** next = StringListGetNext(currentNode);
+            if (util::StringsEqual(currentNode[0], str))
+            {
+                head[0] = next[0];
+                StringListSetNext(head, StringListGetNext(next));
+                free(next);
+            }       
+            else
+                currentNode = next;
+        }
+
+        char** prev = head;
         while (currentNode != nullptr)
         {
             char** next = StringListGetNext(currentNode);
             if (util::StringsEqual(currentNode[0], str))
             {
-                if (prev)                         // Element about to be deleted isn't list's head 
-                {   // Assign currentNode content to prev, destroy former
-                    StringListSetNext(prev, next);
-                    if (currentNode[0]) free(currentNode[0]);
-                    free(currentNode);
-                }
-                else if (next)                    // Element is a head but not a tail of the list
-                {   // Assign next's content to head's, destroy former
-                    head[0] = next[0];
-                    StringListSetNext(head, StringListGetNext(next));
-                    free(next);
-                    next = StringListGetNext(head);
-                }
-                else                              // Element is both the head and tail of the list
-                {   // Destroy and nullify head's content without destroying the head itself
-                    // so caller won't be left with wild pointer
-                    if (currentNode[0]) free(currentNode[0]);
-                    currentNode[0] = nullptr;
-                    currentNode[1] = nullptr;
-                }
+                StringListSetNext(prev, next);
+                if (currentNode[0]) free(currentNode[0]);
+                free(currentNode);
             }
             else
                 prev = currentNode;
@@ -125,7 +122,7 @@ namespace slst
             if (needsReplace)
             {
                 char* res = util::StringReplace(node[0], before, after);
-                if (node[0]) free(node[0]);
+                free(node[0]);
                 node[0] = res;
             }
             StringListForward(&node);
@@ -170,19 +167,13 @@ namespace slst
 
     char* slst::StringListAssignVal(char** node, char* value)
     {
-        if (value)
-        {
-            size_t valueLength = strlen(value) + 1;
-            node[0] = node[0] ?
-                util::reallocate_memory<char>(&node[0], valueLength) : // node[0] was malloc char*
-                util::allocate_memory<char>(valueLength);              // node[0] was nullptr
-            strcpy_s(node[0], valueLength, value);
-        }
-        else if (node[0]) // Assigning nullptr value is valid
-        {
-            free(node[0]);
-            node[0] = nullptr;
-        }
+        if (!value)
+            return nullptr;
+
+        size_t valueLength = strlen(value) + 1;
+        node[0] = util::reallocate_memory<char>(&node[0], valueLength); // node[0] was malloc char*
+        strcpy_s(node[0], valueLength, value);
+
         return node[0];
     }
 
