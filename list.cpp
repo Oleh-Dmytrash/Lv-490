@@ -10,7 +10,7 @@ void StringListInit(StringList* list)
 
 void StringListDestroy(StringList* list)
 {
-	if (*list == nullptr) return;
+	if (list == nullptr || *list == nullptr) return;
 	ListNode next_element = (ListNode)(*list)[1], current_element = *list;
 	while (current_element != nullptr)
 	{
@@ -27,19 +27,21 @@ void StringListAdd(StringList list, const char* str)
 	if (list == nullptr) return;
 
 	ListNode last_element = list;
-	while (last_element[1] != nullptr)
-	{
-		last_element = (ListNode)(last_element[1]);
-	}
-
+	
 	if (last_element[0] == nullptr)
 	{
 		last_element[0] = AllocateDynamically(str);
 		return;
 	}
+	
+	while (last_element[1] != nullptr)
+	{
+		last_element = (ListNode)(last_element[1]);
+	}
+
 
 	auto temp = last_element;
-	last_element = (ListNode)last_element[1];
+	//last_element = (ListNode)last_element[1];
 	last_element = (ListNode)malloc(2 * sizeof(char**));
 
 	temp[1] = (char*)last_element;
@@ -49,45 +51,29 @@ void StringListAdd(StringList list, const char* str)
 	last_element[1] = nullptr;
 
 }
-
-void StringListRemove(StringList* list, const char* str)
+//TODO::
+void StringListRemove(StringList list, const char* str)
 {
-	ListNode current_element = *list, next_element;
-	if (list == nullptr || *list == nullptr) return;
+	if (list == nullptr) return;
+	ListNode current_element = list, next_element;
 	// if the value in the head is to be removed
 	while (strcmp((char*)current_element[0], str) == 0)
 	{
-		/*current_element = *list;
-		*list = (char**)*list[1];
-		if (current_element[1] != nullptr)
+		if ((list)[1] == nullptr)
 		{
-			free((char*)current_element[0]);
-			free(current_element);
-			current_element = *list;
-		}
-		else
-		{
-			free((char*)current_element[0]);
-			free(current_element);
-			*list = nullptr;
-			return;
-		}*/
-		if ((*list)[1] == nullptr)
-		{
-			*list = nullptr;
 			free(current_element[0]);
-			free(current_element);
+			current_element[0] = nullptr;
 			return;
 		}
-		*list = (ListNode)(*list)[1];
 		free(current_element[0]);
-		free(current_element);
-		current_element = *list;
-
+		ListNode second_list_node = (ListNode)current_element[1];
+		current_element[0] = (second_list_node)[0];
+		current_element[1] = second_list_node[1];
+		free(second_list_node);
 	}
-	if (*list == nullptr) return;
-
+	
 	next_element = (ListNode)current_element[1];
+	if (next_element == nullptr) return;
 	while (next_element[1] != nullptr)
 	{
 		if (strcmp(next_element[0], str) == 0)
@@ -136,10 +122,10 @@ int StringListIndexOf(const StringList list, const char* str)
 		current_element = (ListNode)current_element[1];
 	}
 }
-
-void StringListRemoveDuplicates(StringList* list)
+//TODO
+void StringListRemoveDuplicates(StringList list)
 {
-	ListNode current_node = *list;
+	/*ListNode current_node = *list;
 	int index = 0;
 	while (current_node != nullptr)
 	{
@@ -154,6 +140,12 @@ void StringListRemoveDuplicates(StringList* list)
 			index++;
 			current_node = (ListNode)current_node[1];
 		}
+	}*/
+	ListNode current_node = list;
+	while (current_node[1] != nullptr)
+	{
+		StringListRemove((StringList)current_node[1], current_node[0]);
+		current_node = (ListNode)current_node[1];
 	}
 }
 
@@ -305,7 +297,9 @@ void StringListPrint(const StringList list)
 char* AllocateDynamically(const char* staticly_allocated_ptr)
 {
 	char* dynamicly_allocated_ptr = (char*)malloc(strlen(staticly_allocated_ptr) * sizeof(char) + 1);
+	if(dynamicly_allocated_ptr != nullptr)
 	strcpy(dynamicly_allocated_ptr, staticly_allocated_ptr);
+	else return nullptr;
 	return dynamicly_allocated_ptr;
 }
 

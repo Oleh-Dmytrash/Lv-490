@@ -25,7 +25,7 @@ void StringListAdd(StringList list, const char* str);
 /*
 	Deallocate and remove all the entries of the element in the list
 */
-void StringListRemove(StringList* list, const char* str);
+void StringListRemove(StringList list, const char* str);
 
 /*
 	Get count of elements in the list
@@ -50,7 +50,7 @@ void StringListSwapItems(const StringList list, size_t index1, size_t index2);
 /*
 	Remove all duplicated elements, leaving a list with unique values
 */
-void StringListRemoveDuplicates(StringList* list);
+void StringListRemoveDuplicates(StringList list);
 
 /*
 	Replace all the entries of old_value with new_value
