@@ -71,12 +71,8 @@ static void QuickSort(StringList list, int start, int end);
 
 static ListNode StringListGetNodeByIndex(StringList list, size_t index);
 
-static void StringListRemoveByIndex(StringList* list, size_t index);
-
 static size_t StringListPartition(StringList list, int start_index, int end_index);
 
 static char* AllocateDynamically(const char* statically_allocated_ptr);
-
-static bool StringListHasSameElementBefore(StringList list, ListNode element);
 
 void StringListPrint(const StringList list);

@@ -127,7 +127,7 @@ int StringListIndexOf(const StringList list, const char* str)
 
 void StringListRemoveDuplicates(StringList list)
 {
-	if (list = nullptr) return;
+	if (list == nullptr) return;
 	ListNode current_node = list;
 	while (current_node[1] != nullptr)
 	{
@@ -215,40 +215,6 @@ ListNode StringListGetNodeByIndex(StringList list, size_t index)
 	return current_element;
 }
 
-void StringListRemoveByIndex(StringList* list, size_t index)
-{
-	if (*list == nullptr) return;
-	int ind = 0;
-	if (index >= StringListSize(*list)) return;
-	ListNode current_element = *list;
-	if (index == 0)
-	{
-		*list = (ListNode)(*list)[1];
-		free(current_element[0]);
-		free(current_element);
-		current_element = *list;
-		return;
-	}
-	if (index == StringListSize(*list) - 1)
-	{
-		ListNode  previous_node = StringListGetNodeByIndex(*list, index - 1);
-		ListNode to_be_deleted = StringListGetNodeByIndex(*list, index);
-		free(to_be_deleted[0]);
-		free(to_be_deleted);
-		previous_node[1] = nullptr;
-		return;
-	}
-
-	ListNode previous_node = StringListGetNodeByIndex(*list, index - 1);
-	ListNode to_be_deleted = (ListNode)previous_node[1];
-	ListNode next_node = (ListNode)to_be_deleted[1];
-	previous_node[1] = (char*)next_node;
-
-	//
-
-	free(to_be_deleted[0]);
-	free(to_be_deleted);
-}
 
 size_t StringListPartition(StringList list, int start_index, int end_index)
 {
@@ -290,16 +256,4 @@ char* AllocateDynamically(const char* staticly_allocated_ptr)
 	return dynamicly_allocated_ptr;
 }
 
-bool StringListHasSameElementBefore(StringList list, ListNode element)
-{
-	ListNode current_element = list;
 
-	while (current_element != element)
-	{
-		if (strcmp(current_element[0], element[0]) == 0)
-			return true;
-		current_element = (ListNode)current_element[1];
-	}
-	return false;
-
-}
