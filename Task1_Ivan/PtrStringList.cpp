@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "PtrStringList.h"
 
 namespace slst
@@ -25,10 +26,9 @@ namespace slst
 
     void slst::StringListAdd(char** list, String str)
     {  
-        char** newNode = nullptr;
         if (list && str) // If list is not empty then append
         {
-            newNode = StringListAllocateNode();
+            char** newNode = StringListAllocateNode();
             StringListAssignVal(newNode, str);
             char** currentNode = list;
             char** next;
@@ -41,6 +41,9 @@ namespace slst
 
     void slst::StringListRemove(char** head, const String str)
     {
+        if (!head && !str)
+            return;
+
         char** currentNode = head;
         while (currentNode != nullptr && currentNode == head)
         {
@@ -170,7 +173,7 @@ namespace slst
 #pragma region HelperFunctions
     char** slst::StringListAllocateNode()
     {
-        char** node = util::allocate_memory<char*>(NODE_SIZE);  // Allocate space for 2 pointers to char*
+        char** node = (char**)malloc(NODE_SIZE * sizeof(char**));   // Allocate space for 2 pointers to char*
         node[0] = nullptr;
         node[1] = nullptr;                                      // Terminate list
         return node;
@@ -181,8 +184,8 @@ namespace slst
         if (!value)
             return nullptr;
 
-        size_t valueLength = strlen(value) + 1;
-        node[0] = util::reallocate_memory<char>(&node[0], valueLength); // node[0] was malloc char*
+        size_t valueLength = strnlen(value, util::MAXIMUM_STRING_BYTE_COUNT) + 1;
+        node[0] = (char*)realloc(node[0], valueLength * sizeof(char)); // node[0] was malloc char*
         strcpy_s(node[0], valueLength, value);
 
         return node[0];
@@ -244,6 +247,7 @@ namespace slst
             currentNode = next;
         }
     }
+    
 #pragma endregion HelperFunctions
 
 }

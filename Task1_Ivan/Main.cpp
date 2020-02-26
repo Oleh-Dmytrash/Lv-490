@@ -15,8 +15,8 @@ int main(int argc, char** argv)
 		char** head = list;
 		for (size_t i = 0; i < initialSize; i++)
 		{
-			head[0] = util::allocate_memory<char>(2);
-			head[0][0] = initialSize - i + '0';
+			head[0] = (char*)malloc(sizeof(char) * 2);
+			head[0][0] = initialSize - static_cast<char>(i) + '0';
 			head[0][1] = '\0';
 			slst::StringListForward(&head);
 		}
@@ -26,8 +26,8 @@ int main(int argc, char** argv)
 	PrintListSize(list);
 	for (size_t k = 0; k < 5; k++)
 	{
-		char* str = util::allocate_memory<char>(2);
-		str[0] = k + '0';
+		char* str = (char*)malloc(sizeof(char) * 2);
+		str[0] = static_cast<char>(k) + '0';
 		str[1] = '\0';
 		slst::StringListAdd(list, str);
 		slst::StringListAdd(list, str);
@@ -64,8 +64,8 @@ int main(int argc, char** argv)
 
 	for (size_t k = 0; k < 5; k++)
 	{
-		char* str = util::allocate_memory<char>(3);
-		str[0] = k + '0';
+		char* str = (char*)malloc(sizeof(char) * 3);
+		str[0] = static_cast<char>(k) + '0';
 		str[1] = 1 + '0';
 		str[2] = '\0';
 		slst::StringListAdd(list, str);
@@ -76,6 +76,7 @@ int main(int argc, char** argv)
 	PrintListSize(list);
 
 	slst::StringListReplaceInStrings(list, (char*)"1", (char*)"RI");
+	slst::StringListReplaceInStrings(list, (char*)"1", nullptr);
 	std::cout << "\nEdited list, 1 is replacesd with RI: \n";
 	PrintList(list);
 	PrintListSize(list);
@@ -91,6 +92,7 @@ int main(int argc, char** argv)
 	PrintListSize(list);
 
 	slst::StringListSort(list);
+	slst::StringListSort(nullptr);
 	std::cout << "\nList, sorted in ascending order: \n";
 	PrintList(list);
 	PrintListSize(list);
