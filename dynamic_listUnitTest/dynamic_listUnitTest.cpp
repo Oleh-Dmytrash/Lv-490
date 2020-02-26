@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include <vector>
-#include <algorithm>
-#include <functional>
 #include "../dynamyc_list/list.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -41,8 +39,7 @@ namespace dynamiclistUnitTest
 		}
 
 		TEST_METHOD(StringListSizeTest2)
-		{
-			char str[] = { "abcdefg" };			
+		{		
 			Assert::AreEqual(StringListSize(list), 0, L"Function StringListSize not working correctly");
 		}
 

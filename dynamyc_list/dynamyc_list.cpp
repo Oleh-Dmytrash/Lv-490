@@ -9,19 +9,19 @@ int main()
     char str[] = { "abcdefg" };
     char** list = NULL;
     StringListInit(&list);
-    StringListAdd(list, str);
     StringListAdd(list, str + 1);
-    StringListAdd(list, str + 4);
-    StringListAdd(list, str + 2);
     StringListAdd(list, str + 1);
-    StringListAdd(list, str + 4);
-    StringListAdd(list, str + 2);
+    StringListAdd(list, str + 1);
+    StringListAdd(list, str + 1);
+    StringListAdd(list, str + 1);
+    StringListAdd(list, str + 1);
+    StringListAdd(list, str + 1);
 
-    std::cout << "Size of list: " << StringListSize(list) << std::endl << std::endl;
+    /*std::cout << "Size of list: " << StringListSize(list) << std::endl << std::endl;
 
     std::cout << "First position for " << str + 2 << ": " << StringListIndexOf(list, str + 2) << std::endl << std::endl;
 
-    std::cout << "Non sorted array:\n" << std::endl;
+    std::cout << "Non sorted array:\n" << std::endl;*/
     int pos = 0;
     char** elem = NULL;
     do
@@ -36,7 +36,7 @@ int main()
         ++pos;
     } while (elem);
 
-    StringListSort(list);
+    StringListRemove(list, str + 1);
 
     std::cout << "\nSorted array:\n" << std::endl;
     pos = 0;
@@ -55,7 +55,7 @@ int main()
 
     StringListDestroy(&list);
 
-    std::cout << "\n----------------------------------------------------------------------------------\n";
+    /*std::cout << "\n----------------------------------------------------------------------------------\n";
 
     std::cout << "\nList with dublicates:\n" << std::endl;
 
@@ -142,7 +142,7 @@ int main()
         ++pos;
     } while (elem);
 
-    StringListDestroy(&list);
+    StringListDestroy(&list);*/
 
     return 0;
 }
