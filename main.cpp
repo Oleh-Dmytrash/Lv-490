@@ -4,22 +4,17 @@ int main()
 {
 	StringList list;
 	StringListInit(&list);
-	StringListAdd(list, "hello");
-	StringListAdd(list, "hi");
-	StringListAdd(list, "hello");
-	StringListAdd(list, "hey");
-	StringListAdd(list, "bonjour");
-	StringListAdd(list, "hello");
-	//StringListRemove(list, "hello");
+	StringListAdd(list, "a");
+	StringListAdd(list, "b");
+	StringListAdd(list, "c");
+	StringListAdd(list, "d");
+	StringListAdd(list, "e");
 
-	StringListPrint(list);
-	StringListReplaceInStrings(list, "hi", "Welcome");
-	StringListPrint(list);
 	StringListRemoveDuplicates(list);
-	StringListPrint(list);
-	StringListSort(list);
-	StringListPrint(list);
-	StringListDestroy(&list);
 
+	
+	StringListPrint(list);
+	std::cout << StringListSize(list);
+	
 	std::cin.get();
 }
