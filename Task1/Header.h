@@ -13,6 +13,9 @@ using namespace std;
 
 void StringListInit(char ***list)
 {
+	if (*list == NULL) {
+		return;
+	}
 	*list = (char **)malloc(2 * sizeof(char*));
 	(*list)[0] = NULL;
 	(*list)[1] = NULL;
