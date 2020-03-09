@@ -22,12 +22,34 @@ void StringListRemoveDuplicates(char** list);
 /* Replaces every occurrence of the before, in each of the string lists's strings, with after. */
 void StringListReplaceInStrings(char** list, char* before, char* after);
 /* Sorts the list of strings in ascending order */
-void StringListSort(char** list);
+char** StringListSort(char** list);
 void Delete(char** list);
-
-
-
+char** elementOnPosition(char** list, int i);
 /*removes nodeRemove from the list*/
 char** RemoveElement(char** prevNode, char** nodeRemove);
+char** merge(char** a, char**b);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
