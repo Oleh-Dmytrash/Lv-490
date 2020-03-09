@@ -43,7 +43,6 @@ void StringListInit(char*** list)
 
 void StringListDestroy(char*** head)
 {
-
 	if (head!=NULL)
 	{
 		if (*head != NULL)//to avoid access violation
@@ -76,7 +75,6 @@ void StringListDestroy(char*** head)
 			free(head);
 		}
 	}
-	else return;
 	return;
 }
 
@@ -92,30 +90,27 @@ void StringListAdd(char** node, const char* str)
 	if (!dyn_str)
 		return;
 	strcpy(dyn_str, str);
-	dyn_str[strlen(str)] = '\0';	
+	dyn_str[strlen(str)] = '\0';
 
-	while (1)
+	if (node[0] == NULL)//null data can be only in first node
 	{
-		if (node[0] == NULL)
-		{
-			node[0] = dyn_str;
-			break;
-		}
-		if (node[1] == NULL)
-		{
-			char** added_node = (char**)malloc(sizeof(char*) * 2);
-			if (!added_node)
-			{
-				free(dyn_str);//avoid memory leak and return
-				return;
-			}
-			added_node[0] = dyn_str;
-			added_node[1] = NULL;
-			node[1] = (char*)added_node;
-			break;
-		}
-		node = (char**)node[1];
+		node[0] = dyn_str;
+		return;
 	}
+
+	while (node[1] != NULL)
+		node = (char**)node[1];//to tail
+
+	char** added_node = (char**)malloc(sizeof(char*) * 2);
+	if (!added_node)
+	{
+		free(dyn_str);//avoid memory leak and return
+		return;
+	}
+	added_node[0] = dyn_str;
+	added_node[1] = NULL;
+	node[1] = (char*)added_node;
+
 	return;
 }
 
@@ -127,9 +122,10 @@ void StringListRemove(char** head, const char* str)
 		return;
 	char**current = head;
 	char**prev = current;
-	while (1)
+
+	while (current)
 	{
-		if (strcmp(str, current[0]) == 0)
+		if (strcmp(str, current[0]) == 0)//equal data
 		{
 			if (current == prev)//if first
 			{
@@ -163,7 +159,7 @@ void StringListRemove(char** head, const char* str)
 				current = prev;
 			}
 		}
-		else
+		else//not equal data
 		{
 			if (current[1] != NULL)
 			{
@@ -172,7 +168,6 @@ void StringListRemove(char** head, const char* str)
 			}
 			else break;
 		}
-
 	}
 	return;
 }
@@ -246,9 +241,9 @@ void StringListRemoveDuplicates(char** list)
 
 void StringListReplaceInStrings(char** list,const char* before,const char* after)
 {
-	if (list == NULL||list[1]==NULL||list[0]==NULL)
+	if (list[0]==NULL)//at least 1 node with data
 		return;
-	if (!before || !after)
+	if (!before || !after)//strings should be not null
 		return;
 
 	char** current = list;
@@ -258,9 +253,40 @@ void StringListReplaceInStrings(char** list,const char* before,const char* after
 	{
 		if (strcmp(current[0], before) == 0)
 		{
-			current[0] = (char*)realloc(current[0], new_size * sizeof(char) + 1);
+			current[0] = (char*)realloc(current[0], new_size * sizeof(char) + 1);//just change data
 			strcpy(current[0], after);
 		}
+
+		current = (char**)current[1];
+	}
+	return;
+}
+
+void StringListSort(char** list)
+{
+	if (list == NULL || list[1] == NULL)//at least 2 nodes
+		return;
+
+	int size = StringListSize(list);
+	char** current = list;
+
+	char** current_cmp = NULL;
+	char** min_str = NULL;
+
+	while (current != NULL)//selection sort
+	{
+		min_str = current;
+		current_cmp = current;
+
+		while (current_cmp != NULL)
+		{
+			if (strcmp(min_str[0], current_cmp[0]) > 0)
+				min_str = current_cmp;
+
+			current_cmp = (char**)current_cmp[1];
+		}
+
+		swap_str(current, min_str);
 
 		current = (char**)current[1];
 	}
@@ -272,39 +298,6 @@ void swap_str(char** first, char** second)
 	char* temp_elem = first[0];
 	first[0] = second[0];
 	second[0] = temp_elem;
-	return;
-}
-
-void StringListSort(char** list)
-{
-	if (list == NULL || list[1] == NULL)
-		return;
-
-	int size = StringListSize(list);
-	char** current = list;
-
-	char** current_cmp = NULL;
-	char** min_str = NULL;
-
-	while (current != NULL)
-	{
-		min_str = current;
-		current_cmp = current;
-
-		while (current_cmp != NULL)
-		{
-			if (strcmp(min_str[0], current_cmp[0]) > 0)
-			{
-				min_str = current_cmp;
-			}
-
-			current_cmp = (char**)current_cmp[1];
-		}
-
-		swap_str(current, min_str);
-
-		current = (char**)current[1];
-	}
 	return;
 }
 
